@@ -1,82 +1,81 @@
-# CMTTHE04 Week4 oefening 1
-
-## Pong Game Screens
-
-Een interface voor de Pong game
+# Pepe Run
 
 ## PlayScreen Bouwen
-
-- Bekijk de `PlayScreen.ts` class.
-- Verplaats het aanmaken en updaten van de paddle en ball naar PlayScreen.
-- Playscreen heeft geen `gameLoop` en ook geen `requestAnimationFrame`
-- Playscreen heeft wel een `update` functie waarin je de ball en paddle kan updaten.
 
 Hieronder zie je een voorbeeld waarbij de paddle al is overgezet naar de PlayScreen class. Je moet hier de ball nog aan toevoegen.
 
 ```
-class PlayScreen {
+class playScreen {
 
-    private paddle: Paddle
+    private _game: Game;
+    private _player: Player;
+    private _ui: Ui;
+    public enemyArray: Array<Enemy>;
+    private _score: number;
+    private _spawnEnemyInterval: any;
 
-    constructor() {
-        this.paddle = new Paddle(20, 87, 83)
+    constructor(game: Game) {
+        this._game = game;
+        this._player = new Player();
+        this.enemyArray = [];
+        this._score = 0;
+        this._ui = new Ui();
+
+        this._spawnEnemy();
+        this.gameLoop();
     }
 
     public update(): void {
-        this.paddle.update()
+        this._player.update();
+        this.enemyArray.forEach(x => x.update());
+        this._ui.update(this._score);
+
+        this._didCollide();
+
+        requestAnimationFrame(() => this.gameLoop());
     }
 }
 ```
 
 ### Game
 
-- Game.ts heeft nu alleen nog de gameloop met `requestAnimationFrame`.
-- Game.ts krijgt een `screen` property. Het type van `screen` is `any`.
-- Daarin plaats je een `new PlayScreen()`
-- In de update van Game.ts roep je de update van screen aan!
-- Test of dit werkt!
-
-Game gaat er als volgt uit zien:
-
 **Game.ts**
 
 ```
 class Game {
-    screen:any
-    constructor(){
-        this.screen = new PlayScreen()
-        this.gameLoop()
-    }
-    gameLoop(){
-        this.screen.update()
-        requestAnimationFrame(() => this.gameLoop())
-    }
+    public screen: PlayScreen | StartScreen | GameOverScreen;
+
+  constructor() {
+    this.screen = new StartScreen(this);
+  }
+
+  public mainMenu() {
+    document.body.innerHTML = '';
+    this.screen = new StartScreen(this);
+  }
+
+  public startGame() {
+    document.body.innerHTML = '';
+    this.screen = new PlayScreen(this);
+  }
+
+  public gameOver(score: number) {
+    document.body.innerHTML = '';
+    this.screen = new GameOverScreen(this, score);
+  }
 }
 ```
 
-## StartScreen Bouwen
-
-- Bekijk de `StartScreen.ts` class.
-- Startscreen toont een html element met een splash image van je game.
-- Startscreen heeft een update functie.
-- In Game.ts verander je `this.screen = new PlayScreen()` naar `this.screen = new StartScreen(this)`.
-- Run de game. Zie je het splash screen?
-- Plaats zelf een goede afbeelding in het splash screen!
-
-### Van startscreen naar playscreen
-
-- Schrijf in `Game.ts` een `showPlayScreen` functie die van scherm kan wisselen
-- Je hoeft alleen de `screen` variabele aan te passen: `this.screen = new PlayScreen()`
-- Je moet ook de DOM leeg maken, anders blijven de HTML elementen van het vorige scherm zichtbaar
+### Van startscreen naar playScreen
 
 **Game.ts**
 
 ```
 class Game {
-    showPlayScreen(){
-        document.body.innerHTML = ""
-        this.screen = new PlayScreen()
-    }
+  public startGame() {
+    document.body.innerHTML = '';
+    this.screen = new PlayScreen(this);
+  }
 }
 ```
 
