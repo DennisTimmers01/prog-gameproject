@@ -1,0 +1,53 @@
+html,
+body {
+  height: 100%;
+  background: yellow;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+player,
+enemy {
+  display: block;
+  height: 4em;
+  width: 4em;
+  background: green;
+  position: absolute;
+  top: 70%;
+  left: calc(50% - 2em);
+}
+
+enemy {
+  background: red;
+  top: -4em;
+  background: url(../images/enemy.png);
+  background-size: cover;
+}
+
+player {
+  margin-left: 0.1em;
+  width: 3.8em;
+  background: url(../images/pepe.png);
+  background-size: cover;
+}
+
+button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1em;
+  border-radius: 10px;
+  background: orange;
+  color: white;
+  font-size: 3em;
+}
+
+p {
+  text-align: center;
+  color: orange;
+  font-size: 2em;
+}
