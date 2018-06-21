@@ -1,39 +1,59 @@
 # Pepe Run
 
-## PlayScreen Bouwen
+## Play
 
-Hieronder zie je een voorbeeld waarbij de paddle al is overgezet naar de PlayScreen class. Je moet hier de ball nog aan toevoegen.
+### how-to
 
-```
+Gebruik de pijltjes toetsen of swipe links/rights op je mobiel om de pepe te sturen.
+Probeer de spike ballen te ontwijken.
+
+### Live demo
+
+[Pepe run](https://dennistimmers01.github.io/prog-gameproject/)
+
+### Installatie
+
+Als je de game zelf locaal wilt spelen kun je deze repo clonen. De typescript bestanden bevinden zich in de dev map.
+De complete game, inclusief javascript bestand bevind zich in Docs
+
+## Toelichting OOP
+
+### Classes
+
+De game is onderverdeeld in verschillende classes. Dit zorgt voor herbruikbaarheid en makkelijk leesbaren code.
+
+Variabelen zijn onderverdeeld in public, protected of private. Alleen variable die public zijn kunnen direct aangepast worden.
+Protected is alleen bereikbaar door classes die extend worden. Private is alleen bereikbaar door de class zelf.
+
+```typescript
 class playScreen {
+  private _game: Game;
+  private _player: Player;
+  private _ui: Ui;
+  public enemyArray: Array<Enemy>;
+  private _score: number;
+  private _spawnEnemyInterval: any;
 
-    private _game: Game;
-    private _player: Player;
-    private _ui: Ui;
-    public enemyArray: Array<Enemy>;
-    private _score: number;
-    private _spawnEnemyInterval: any;
+  constructor(game: Game) {
+    this._game = game;
+    this._player = new Player();
+    this.enemyArray = [];
+    this._score = 0;
+    this._ui = new Ui();
 
-    constructor(game: Game) {
-        this._game = game;
-        this._player = new Player();
-        this.enemyArray = [];
-        this._score = 0;
-        this._ui = new Ui();
+    this._spawnEnemy();
+    this.gameLoop();
+  }
 
-        this._spawnEnemy();
-        this.gameLoop();
-    }
+  public update(): void {
+    this._player.update();
+    this.enemyArray.forEach(x => x.update());
+    this._ui.update(this._score);
 
-    public update(): void {
-        this._player.update();
-        this.enemyArray.forEach(x => x.update());
-        this._ui.update(this._score);
+    this._didCollide();
 
-        this._didCollide();
-
-        requestAnimationFrame(() => this.gameLoop());
-    }
+    requestAnimationFrame(() => this.gameLoop());
+  }
 }
 ```
 
@@ -41,9 +61,9 @@ class playScreen {
 
 **Game.ts**
 
-```
+```typescript
 class Game {
-    public screen: PlayScreen | StartScreen | GameOverScreen;
+  public screen: PlayScreen | StartScreen | GameOverScreen;
 
   constructor() {
     this.screen = new StartScreen(this);
@@ -70,7 +90,7 @@ class Game {
 
 **Game.ts**
 
-```
+```typescript
 class Game {
   public startGame() {
     document.body.innerHTML = '';
@@ -78,8 +98,6 @@ class Game {
   }
 }
 ```
-
-Kijk nu zelf hoe je vanuit StartScreen deze functie kan aanroepen!
 
 ### GameOverScreen
 
