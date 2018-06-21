@@ -23,7 +23,7 @@ De complete game, inclusief javascript bestand bevind zich in Docs
 De game is onderverdeeld in verschillende classes. Dit zorgt voor herbruikbaarheid en makkelijk leesbaren code.
 
 Variabelen zijn onderverdeeld in public, protected of private. Alleen variable die public zijn kunnen direct aangepast worden.
-Protected is alleen bereikbaar door classes die extend worden. Private is alleen bereikbaar door de class zelf.
+Protected is alleen bereikbaar voor de children van de parent class. Private is alleen bereikbaar door de class zelf.
 
 ```typescript
 class playScreen {
@@ -86,15 +86,88 @@ class Game {
 }
 ```
 
-### Van startscreen naar playScreen
+### Van startScreen naar playScreen
 
 **Game.ts**
+
+De game bevat een functie die de game start.
 
 ```typescript
 class Game {
   public startGame() {
     document.body.innerHTML = '';
     this.screen = new PlayScreen(this);
+  }
+}
+```
+
+### Inheritance
+
+Beide Enemy en Player maken gebruik van de Entity class. Dit is omdat beide classes HTML elementen maken en appenden aan de body.
+Ook hebben bijde classes een bounding box die opgevraagd moet kunnen worden voor collision detection.
+De classes die inheriten van Entity moeten een naam mee geven via Super(), deze is nodig om het HTML element een naam te geven.
+
+#### Entity
+
+```typescript
+class Entity {
+  protected element: HTMLElement;
+  protected lanes: Array<number>;
+  protected currentLane: number;
+
+  constructor(element: string) {
+    this.element = document.createElement(element);
+
+    this.lanes = [LEFT_LANE, CENTER_LANE, RIGHT_LANE];
+    this.currentLane = CENTER_LANE;
+
+    this._createEntity();
+  }
+
+  private _createEntity(): void {
+    document.body.appendChild(this.element);
+  }
+
+  public getBoundingBox(): ClientRect {
+    return this.element.getBoundingClientRect();
+  }
+}
+```
+
+#### Player
+
+```typescript
+class Enemy extends Entity {
+  private _game: PlayScreen;
+  private _xPos: number;
+  private _yPos: number;
+  private _ySpeed: number;
+
+  constructor(game: PlayScreen) {
+    super('enemy');
+
+    this._game = game;
+    this._xPos = 0;
+    this._yPos = 0;
+    this._ySpeed = 4;
+
+    this._setEnemyPosition();
+  }
+}
+```
+
+#### Player
+
+```typescript
+class Player extends Entity {
+  _mc: HammerManager;
+
+  constructor() {
+    super('player');
+    this._mc = new Hammer(document.body);
+    this._addEventListeners();
+    this._panLeft();
+    this._panRight();
   }
 }
 ```
