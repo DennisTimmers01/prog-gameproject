@@ -98,9 +98,3 @@ class Game {
   }
 }
 ```
-
-### GameOverScreen
-
-- Kijk of je de bovenstaande oefening ook kan doen voor een Game Over screen.
-- Het Game Over screen wordt getoond als je teveel ballen het scherm uit laat gaan.
-- Het Game Over screen toont een score, en een knop om terug naar het startscreen of playscreen te gaan.
