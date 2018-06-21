@@ -1,8 +1,8 @@
 class GameOverScreen {
-  _finalMsg: HTMLElement;
-  _restartBtn: HTMLElement;
-  _game: Game;
-  _score: number;
+  private _game: Game;
+  private _finalMsg: HTMLElement;
+  private _restartBtn: HTMLElement;
+  private _score: number;
 
   constructor(game: Game, score: number) {
     this._game = game;

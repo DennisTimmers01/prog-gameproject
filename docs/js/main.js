@@ -4,16 +4,16 @@ const CENTER_LANE = 1;
 const RIGHT_LANE = 2;
 class Entity {
     constructor(element) {
-        this._element = document.createElement(element);
-        this._lanes = [LEFT_LANE, CENTER_LANE, RIGHT_LANE];
-        this._currentLane = CENTER_LANE;
+        this.element = document.createElement(element);
+        this.lanes = [LEFT_LANE, CENTER_LANE, RIGHT_LANE];
+        this.currentLane = CENTER_LANE;
         this._createEntity();
     }
     _createEntity() {
-        document.body.appendChild(this._element);
+        document.body.appendChild(this.element);
     }
     getBoundingBox() {
-        return this._element.getBoundingClientRect();
+        return this.element.getBoundingClientRect();
     }
 }
 class Enemy extends Entity {
@@ -30,14 +30,14 @@ class Enemy extends Entity {
             (Math.floor(Math.random() * (RIGHT_LANE + 1)) + (LEFT_LANE - 1)) * 100;
     }
     _moveEnemy() {
-        this._element.style.transform = `translate(${this._xPos}%, ${(this._yPos += this._ySpeed)}px)`;
+        this.element.style.transform = `translate(${this._xPos}%, ${(this._yPos += this._ySpeed)}px)`;
     }
     _removeEnemy() {
         if (this._yPos < window.innerHeight)
             return;
         this._game.addScore();
-        this._game._enemyArray.shift();
-        this._element.remove();
+        this._game.enemyArray.shift();
+        this.element.remove();
     }
     update() {
         this._moveEnemy();
@@ -46,19 +46,19 @@ class Enemy extends Entity {
 }
 class Game {
     constructor() {
-        this._screen = new StartScreen(this);
+        this.screen = new StartScreen(this);
     }
     mainMenu() {
         document.body.innerHTML = '';
-        this._screen = new StartScreen(this);
+        this.screen = new StartScreen(this);
     }
     startGame() {
         document.body.innerHTML = '';
-        this._screen = new PlayScreen(this);
+        this.screen = new PlayScreen(this);
     }
     gameOver(score) {
         document.body.innerHTML = '';
-        this._screen = new GameOverScreen(this, score);
+        this.screen = new GameOverScreen(this, score);
     }
 }
 window.addEventListener('load', () => new Game());
@@ -83,27 +83,27 @@ class Player extends Entity {
         document.addEventListener('keydown', e => this._movePlayerRight(e));
     }
     _movePlayerLeft(e) {
-        if (this._currentLane === LEFT_LANE ||
+        if (this.currentLane === LEFT_LANE ||
             (typeof e.keyCode !== 'undefined' && e.keyCode != MOVE_LEFT_KEY))
             return;
-        this._currentLane--;
+        this.currentLane--;
     }
     _movePlayerRight(e) {
-        if (this._currentLane === RIGHT_LANE ||
+        if (this.currentLane === RIGHT_LANE ||
             (typeof e.keyCode !== 'undefined' && e.keyCode != MOVE_RIGHT_KEY))
             return;
-        this._currentLane++;
+        this.currentLane++;
     }
     _setLane() {
-        switch (this._currentLane) {
+        switch (this.currentLane) {
             case LEFT_LANE:
-                this._element.style.transform = `translateX(-${4}em)`;
+                this.element.style.transform = `translateX(-${4}em)`;
                 break;
             case CENTER_LANE:
-                this._element.style.transform = `translateX(${0}%)`;
+                this.element.style.transform = `translateX(${0}%)`;
                 break;
             case RIGHT_LANE:
-                this._element.style.transform = `translateX(${4}em)`;
+                this.element.style.transform = `translateX(${4}em)`;
                 break;
         }
     }
@@ -143,7 +143,7 @@ class PlayScreen {
     constructor(game) {
         this._game = game;
         this._player = new Player();
-        this._enemyArray = [];
+        this.enemyArray = [];
         this._score = 0;
         this._ui = new Ui();
         this._spawnEnemy();
@@ -151,7 +151,7 @@ class PlayScreen {
     }
     gameLoop() {
         this._player.update();
-        this._enemyArray.forEach(x => x.update());
+        this.enemyArray.forEach(x => x.update());
         this._ui.update(this._score);
         this._didCollide();
         requestAnimationFrame(() => this.gameLoop());
@@ -163,16 +163,16 @@ class PlayScreen {
             b.top <= a.bottom);
     }
     _didCollide() {
-        this._enemyArray.forEach(enemy => {
+        this.enemyArray.forEach(enemy => {
             if (this._checkCollision(this._player.getBoundingBox(), enemy.getBoundingBox())) {
-                this._enemyArray.splice(0, this._enemyArray.length);
+                this.enemyArray.splice(0, this.enemyArray.length);
                 window.clearInterval(this._spawnEnemyInterval);
                 this._game.gameOver(this._score);
             }
         });
     }
     _spawnEnemy() {
-        this._spawnEnemyInterval = setInterval(() => this._enemyArray.push(new Enemy(this)), 1000);
+        this._spawnEnemyInterval = setInterval(() => this.enemyArray.push(new Enemy(this)), 1000);
     }
     addScore() {
         this._score++;

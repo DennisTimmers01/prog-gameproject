@@ -1,5 +1,5 @@
 class Ui {
-  _element: HTMLElement;
+  private _element: HTMLElement;
 
   constructor() {
     this._element = document.createElement('score');

@@ -6,12 +6,13 @@ Een interface voor de Pong game
 
 ## PlayScreen Bouwen
 
-- Bekijk de `PlayScreen.ts` class. 
+- Bekijk de `PlayScreen.ts` class.
 - Verplaats het aanmaken en updaten van de paddle en ball naar PlayScreen.
 - Playscreen heeft geen `gameLoop` en ook geen `requestAnimationFrame`
 - Playscreen heeft wel een `update` functie waarin je de ball en paddle kan updaten.
 
 Hieronder zie je een voorbeeld waarbij de paddle al is overgezet naar de PlayScreen class. Je moet hier de ball nog aan toevoegen.
+
 ```
 class PlayScreen {
 
@@ -29,7 +30,7 @@ class PlayScreen {
 
 ### Game
 
-- Game.ts heeft nu alleen nog de gameloop met `requestAnimationFrame`. 
+- Game.ts heeft nu alleen nog de gameloop met `requestAnimationFrame`.
 - Game.ts krijgt een `screen` property. Het type van `screen` is `any`.
 - Daarin plaats je een `new PlayScreen()`
 - In de update van Game.ts roep je de update van screen aan!
@@ -38,6 +39,7 @@ class PlayScreen {
 Game gaat er als volgt uit zien:
 
 **Game.ts**
+
 ```
 class Game {
     screen:any
@@ -54,9 +56,9 @@ class Game {
 
 ## StartScreen Bouwen
 
-- Bekijk de `StartScreen.ts` class. 
+- Bekijk de `StartScreen.ts` class.
 - Startscreen toont een html element met een splash image van je game.
-- Startscreen heeft een update functie. 
+- Startscreen heeft een update functie.
 - In Game.ts verander je `this.screen = new PlayScreen()` naar `this.screen = new StartScreen(this)`.
 - Run de game. Zie je het splash screen?
 - Plaats zelf een goede afbeelding in het splash screen!
@@ -68,6 +70,7 @@ class Game {
 - Je moet ook de DOM leeg maken, anders blijven de HTML elementen van het vorige scherm zichtbaar
 
 **Game.ts**
+
 ```
 class Game {
     showPlayScreen(){
@@ -76,6 +79,7 @@ class Game {
     }
 }
 ```
+
 Kijk nu zelf hoe je vanuit StartScreen deze functie kan aanroepen!
 
 ### GameOverScreen

@@ -1,15 +1,15 @@
 class PlayScreen {
-  _game: Game;
-  _player: Player;
-  _ui: Ui;
-  _enemyArray: Array<Enemy>;
-  _score: number;
-  _spawnEnemyInterval: any;
+  private _game: Game;
+  private _player: Player;
+  private _ui: Ui;
+  public enemyArray: Array<Enemy>;
+  private _score: number;
+  private _spawnEnemyInterval: any;
 
   constructor(game: Game) {
     this._game = game;
     this._player = new Player();
-    this._enemyArray = [];
+    this.enemyArray = [];
     this._score = 0;
     this._ui = new Ui();
 
@@ -19,7 +19,7 @@ class PlayScreen {
 
   private gameLoop(): void {
     this._player.update();
-    this._enemyArray.forEach(x => x.update());
+    this.enemyArray.forEach(x => x.update());
     this._ui.update(this._score);
 
     this._didCollide();
@@ -37,14 +37,14 @@ class PlayScreen {
   }
 
   private _didCollide(): void {
-    this._enemyArray.forEach(enemy => {
+    this.enemyArray.forEach(enemy => {
       if (
         this._checkCollision(
           this._player.getBoundingBox(),
           enemy.getBoundingBox()
         )
       ) {
-        this._enemyArray.splice(0, this._enemyArray.length);
+        this.enemyArray.splice(0, this.enemyArray.length);
         window.clearInterval(this._spawnEnemyInterval);
         this._game.gameOver(this._score);
       }
@@ -53,7 +53,7 @@ class PlayScreen {
 
   private _spawnEnemy(): void {
     this._spawnEnemyInterval = setInterval(
-      () => this._enemyArray.push(new Enemy(this)),
+      () => this.enemyArray.push(new Enemy(this)),
       1000
     );
   }

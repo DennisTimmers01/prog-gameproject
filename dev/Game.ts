@@ -1,23 +1,23 @@
 class Game {
-  _screen: PlayScreen | StartScreen | GameOverScreen;
+  public screen: PlayScreen | StartScreen | GameOverScreen;
 
   constructor() {
-    this._screen = new StartScreen(this);
+    this.screen = new StartScreen(this);
   }
 
   public mainMenu() {
     document.body.innerHTML = '';
-    this._screen = new StartScreen(this);
+    this.screen = new StartScreen(this);
   }
 
   public startGame() {
     document.body.innerHTML = '';
-    this._screen = new PlayScreen(this);
+    this.screen = new PlayScreen(this);
   }
 
   public gameOver(score: number) {
     document.body.innerHTML = '';
-    this._screen = new GameOverScreen(this, score);
+    this.screen = new GameOverScreen(this, score);
   }
 }
 

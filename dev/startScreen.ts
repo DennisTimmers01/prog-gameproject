@@ -1,6 +1,6 @@
 class StartScreen {
-  _element: HTMLElement;
-  _game: Game;
+  private _game: Game;
+  private _element: HTMLElement;
 
   constructor(game: Game) {
     this._game = game;

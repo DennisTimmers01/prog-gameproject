@@ -1,10 +1,10 @@
 /// <reference path="Entity.ts"/>
 
 class Enemy extends Entity {
-  _game: PlayScreen;
-  _xPos: number;
-  _yPos: number;
-  _ySpeed: number;
+  private _game: PlayScreen;
+  private _xPos: number;
+  private _yPos: number;
+  private _ySpeed: number;
 
   constructor(game: PlayScreen) {
     super('enemy');
@@ -23,7 +23,7 @@ class Enemy extends Entity {
   }
 
   private _moveEnemy(): void {
-    this._element.style.transform = `translate(${
+    this.element.style.transform = `translate(${
       this._xPos
     }%, ${(this._yPos += this._ySpeed)}px)`;
   }
@@ -31,8 +31,8 @@ class Enemy extends Entity {
   private _removeEnemy(): void {
     if (this._yPos < window.innerHeight) return;
     this._game.addScore();
-    this._game._enemyArray.shift();
-    this._element.remove();
+    this._game.enemyArray.shift();
+    this.element.remove();
   }
 
   public update(): void {

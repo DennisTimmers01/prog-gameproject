@@ -29,34 +29,34 @@ class Player extends Entity {
 
   private _movePlayerLeft(e: any): void {
     if (
-      this._currentLane === LEFT_LANE ||
+      this.currentLane === LEFT_LANE ||
       (typeof e.keyCode !== 'undefined' && e.keyCode != MOVE_LEFT_KEY)
     )
       return;
-    this._currentLane--;
+    this.currentLane--;
   }
 
   private _movePlayerRight(e: any): void {
     if (
-      this._currentLane === RIGHT_LANE ||
+      this.currentLane === RIGHT_LANE ||
       (typeof e.keyCode !== 'undefined' && e.keyCode != MOVE_RIGHT_KEY)
     )
       return;
-    this._currentLane++;
+    this.currentLane++;
   }
 
   private _setLane(): void {
-    switch (this._currentLane) {
+    switch (this.currentLane) {
       case LEFT_LANE:
-        this._element.style.transform = `translateX(-${4}em)`;
+        this.element.style.transform = `translateX(-${4}em)`;
         break;
 
       case CENTER_LANE:
-        this._element.style.transform = `translateX(${0}%)`;
+        this.element.style.transform = `translateX(${0}%)`;
         break;
 
       case RIGHT_LANE:
-        this._element.style.transform = `translateX(${4}em)`;
+        this.element.style.transform = `translateX(${4}em)`;
         break;
     }
   }
